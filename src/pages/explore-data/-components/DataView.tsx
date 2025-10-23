@@ -3,6 +3,7 @@ import { GridPaginationModel } from '@mui/x-data-grid';
 import React, { useState } from 'react';
 import { useFilters } from '../../../components/FilterContext';
 import { SciDataGrid } from '../../../components/SciDataGrid';
+import { ContributionsCell } from './ContributionsCell';
 import { filterData } from '../../../utils/filters.utils';
 import { useListQuery } from '../../../hooks/useListQuery';
 import { FilterConfig } from '../../../types/filters.types';
@@ -141,6 +142,14 @@ export const DataView: React.FC<DataViewProps> = ({
             valueGetter: (value, row) => {
               return row.stats?.contributions;
             },
+            renderCell: (params) => (
+              // <ContributionsCell value={params.value} />
+              <ContributionsCell
+                value={params.value}
+                all={data}
+                current={params}
+              />
+            ),
           },
           {
             field: 'stats.tables',

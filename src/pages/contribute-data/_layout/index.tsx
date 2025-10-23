@@ -122,7 +122,7 @@ function Register() {
                 variant="outlined"
                 fullWidth
                 multiline
-                minRows={4}
+                minRows={10}
               />
             </Stack>
           </Box>

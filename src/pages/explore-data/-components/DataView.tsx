@@ -25,13 +25,16 @@ export const DataView: React.FC<DataViewProps> = ({
   const [pageSize, setPageSize] = useState(25);
   const [offset, setOffest] = useState(page * pageSize);
   // CUSTOMIZE: the unique ID field for the data source
-  const dataIdField = 'Id';
+  const dataIdField = 'id';
   // CUSTOMIZE: query mode, 'client' or 'server'
+  // const queryMode = 'server';
   const queryMode = 'client';
-  const { isPending, isFetching, isError, data, error } = useListQuery({
+  let { isPending, isFetching, isError, data, error } = useListQuery({
     activeFilters,
     // CUSTOMIZE: the table data source
-    dataSource: 'dummy-data/exoplanets.csv',
+    // dataSource: 'dummy-data/exoplanets.csv',
+    dataSource: 'dummy-data/explor.json',
+    // dataSource: 'https://contribs-api.materialsproject.org/projects
     filterConfigs,
     offset,
     page,
@@ -89,39 +92,26 @@ export const DataView: React.FC<DataViewProps> = ({
         // CUSTOMIZE: the table columns
         columns={[
           {
-            field: 'Planet Name',
-            headerName: 'Planet Name',
-            width: 200,
+            field: 'id',
+            headerName: 'ID',
+            width: 100,
           },
           {
-            field: 'Planet Host',
-            headerName: 'Planet Host',
-            width: 200,
+            field: 'title',
+            headerName: 'Title',
+            width: 400,
           },
           {
-            field: 'Discovery Method',
-            headerName: 'Discovery Method',
-            width: 200,
+            field: 'completed',
+            headerName: 'Completed',
+            width: 150,
+            type: 'boolean',
           },
           {
-            field: 'Orbital Period Days',
-            headerName: 'Orbital Period',
-            units: 'days',
+            field: 'userId',
+            headerName: 'User ID',
+            width: 150,
             type: 'number',
-            width: 200,
-          },
-          {
-            field: 'Mass',
-            headerName: 'Mass',
-            units: 'Earth Mass',
-            type: 'number',
-            width: 200,
-          },
-          {
-            field: 'Eccentricity',
-            headerName: 'Eccentricity',
-            type: 'number',
-            width: 200,
           },
         ]}
         disableColumnSelector

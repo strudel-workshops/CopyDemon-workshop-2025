@@ -1,4 +1,4 @@
-import { Alert, Box, LinearProgress, Skeleton } from '@mui/material';
+import { Alert, Box, LinearProgress, Skeleton, Link } from '@mui/material';
 import { GridPaginationModel } from '@mui/x-data-grid';
 import React, { useState } from 'react';
 import { useFilters } from '../../../components/FilterContext';
@@ -92,9 +92,20 @@ export const DataView: React.FC<DataViewProps> = ({
         // CUSTOMIZE: the table columns
         columns={[
           {
-            field: 'id',
-            headerName: 'ID',
+            field: 'name',
+            headerName: 'ID as name',
+            type: 'string',
             width: 100,
+            renderCell: (params) => (
+              <Link
+                href={`http://localhost:8081/contribs/projects/${params.value}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                underline="hover"
+              >
+                {params.value}
+              </Link>
+            ),
           },
           {
             field: 'title',
@@ -114,10 +125,49 @@ export const DataView: React.FC<DataViewProps> = ({
             type: 'boolean',
           },
           {
-            field: 'status.column', // what to do with data looks like {status : {column:222, tables:{number:123}}}
-            headerName: 'Column',
+            field: 'stats.columns',
+            headerName: 'Columns',
             width: 150,
             type: 'number',
+            valueGetter: (value, row) => {
+              return row.stats?.columns;
+            },
+          },
+          {
+            field: 'stats.contributions',
+            headerName: 'Contributions',
+            width: 150,
+            type: 'number',
+            valueGetter: (value, row) => {
+              return row.stats?.contributions;
+            },
+          },
+          {
+            field: 'stats.tables',
+            headerName: 'Tables',
+            width: 150,
+            type: 'number',
+            valueGetter: (value, row) => {
+              return row.stats?.tables;
+            },
+          },
+          {
+            field: 'stats.structures',
+            headerName: 'Structures',
+            width: 150,
+            type: 'number',
+            valueGetter: (value, row) => {
+              return row.stats?.structures;
+            },
+          },
+          {
+            field: 'stats.attachments',
+            headerName: 'Attachments',
+            width: 150,
+            type: 'number',
+            valueGetter: (value, row) => {
+              return row.stats?.attachments;
+            },
           },
         ]}
         disableColumnSelector

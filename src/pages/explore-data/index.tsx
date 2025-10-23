@@ -16,51 +16,91 @@ export const Route = createFileRoute('/explore-data/')({
 // CUSTOMIZE: the filter definitions
 const filterConfigs: FilterConfig[] = [
   {
-    field: 'Discovery Method',
-    label: 'Discovery Method',
-    operator: 'contains-one-of',
+    field: 'title',
+    label: 'Project Title',
+    operator: 'contains',
+    filterComponent: 'TextField',
+  },
+  {
+    field: 'owner',
+    label: 'Project Owner',
+    operator: 'contains',
+    filterComponent: 'TextField',
+  },
+  {
+    field: 'is_public',
+    label: 'Public Status',
+    operator: 'equals-one-of',
     filterComponent: 'CheckboxList',
     filterProps: {
       options: [
         {
-          label: 'Astrometry',
-          value: 'Astrometry',
+          label: 'Public',
+          value: true,
         },
         {
-          label: 'Disk Kinematics',
-          value: 'Disk Kinematics',
-        },
-        {
-          label: 'Eclipse Timing Variations',
-          value: 'Eclipse Timing Variations',
-        },
-        {
-          label: 'Imaging',
-          value: 'Imaging',
-        },
-        {
-          label: 'Microlensing',
-          value: 'Microlensing',
-        },
-        {
-          label: 'Radial Velocity',
-          value: 'Radial Velocity',
-        },
-        {
-          label: 'Transit',
-          value: 'Transit',
+          label: 'Private',
+          value: false,
         },
       ],
     },
   },
   {
-    field: 'Mass',
-    label: 'Mass',
+    field: 'is_approved',
+    label: 'Approval Status',
+    operator: 'equals-one-of',
+    filterComponent: 'CheckboxList',
+    filterProps: {
+      options: [
+        {
+          label: 'Approved',
+          value: true,
+        },
+        {
+          label: 'Not Approved',
+          value: false,
+        },
+      ],
+    },
+  },
+  {
+    field: 'stats.columns',
+    label: 'Number of Columns',
     operator: 'between-inclusive',
     filterComponent: 'RangeSlider',
     filterProps: {
       min: 0,
-      max: 10000,
+      max: 800,
+    },
+  },
+  {
+    field: 'stats.contributions',
+    label: 'Number of Contributions',
+    operator: 'between-inclusive',
+    filterComponent: 'RangeSlider',
+    filterProps: {
+      min: 0,
+      max: 1200000,
+    },
+  },
+  {
+    field: 'stats.structures',
+    label: 'Number of Structures',
+    operator: 'between-inclusive',
+    filterComponent: 'RangeSlider',
+    filterProps: {
+      min: 0,
+      max: 600000,
+    },
+  },
+  {
+    field: 'stats.attachments',
+    label: 'Number of Attachments',
+    operator: 'between-inclusive',
+    filterComponent: 'RangeSlider',
+    filterProps: {
+      min: 0,
+      max: 100000,
     },
   },
 ];

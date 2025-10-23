@@ -7,6 +7,7 @@ import { ContributionsCell } from './ContributionsCell';
 import { filterData } from '../../../utils/filters.utils';
 import { useListQuery } from '../../../hooks/useListQuery';
 import { FilterConfig } from '../../../types/filters.types';
+// import { getValueFromValueOptions } from '@mui/x-data-grid/components/panel/filterPanel/filterPanelUtils';
 
 interface DataViewProps {
   filterConfigs: FilterConfig[];
@@ -114,6 +115,16 @@ export const DataView: React.FC<DataViewProps> = ({
             width: 400,
           },
           {
+            field: 'owner',
+            headerName: 'Owner',
+            width: 400,
+            valueGetter: (value: string) => {
+              let ownerName = value.replace(/^google:/i, '');
+              ownerName = ownerName.replace(/@.*$/g, '');
+              return ownerName;
+            },
+          },
+          {
             field: 'is_public',
             headerName: 'Public',
             width: 150,
@@ -159,6 +170,13 @@ export const DataView: React.FC<DataViewProps> = ({
             valueGetter: (value, row) => {
               return row.stats?.tables;
             },
+            sortComparator: (v1, v2, param1, param2) => {
+              const val1 =
+                param1.api.getCellValue(param1.id, 'stats.tables') ?? 0;
+              const val2 =
+                param2.api.getCellValue(param2.id, 'stats.tables') ?? 0;
+              return val1 - val2;
+            },
           },
           {
             field: 'stats.structures',
@@ -166,7 +184,14 @@ export const DataView: React.FC<DataViewProps> = ({
             width: 150,
             type: 'number',
             valueGetter: (value, row) => {
-              return row.stats?.structures;
+              return row.stats?.structures ?? 0;
+            },
+            sortComparator: (v1, v2, param1, param2) => {
+              const val1 =
+                param1.api.getCellValue(param1.id, 'stats.structures') ?? 0;
+              const val2 =
+                param2.api.getCellValue(param2.id, 'stats.structures') ?? 0;
+              return val1 - val2;
             },
           },
           {
@@ -175,7 +200,14 @@ export const DataView: React.FC<DataViewProps> = ({
             width: 150,
             type: 'number',
             valueGetter: (value, row) => {
-              return row.stats?.attachments;
+              return row.stats?.attachments ?? 0;
+            },
+            sortComparator: (v1, v2, param1, param2) => {
+              const val1 =
+                param1.api.getCellValue(param1.id, 'stats.attachments') ?? 0;
+              const val2 =
+                param2.api.getCellValue(param2.id, 'stats.attachments') ?? 0;
+              return val1 - val2;
             },
           },
         ]}

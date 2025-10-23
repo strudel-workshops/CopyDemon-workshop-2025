@@ -1,6 +1,14 @@
 import dayjs from 'dayjs';
 import { DataFilter, FilterConfig } from '../types/filters.types';
 
+/**
+ * Helper function to get nested property value using dot notation
+ * e.g., getNestedValue(obj, 'stats.columns') returns obj.stats.columns
+ */
+const getNestedValue = (obj: any, path: string): any => {
+  return path.split('.').reduce((current, key) => current?.[key], obj);
+};
+
 export const filterBySearchText = (allData: any[], searchText?: string) => {
   let filteredData = allData;
   if (searchText) {
@@ -33,10 +41,19 @@ export const filterByDataFilters = (
       filters.forEach((f) => {
         let match = false;
         if (include === true) {
+          const fieldValue = getNestedValue(d, f.field);
           switch (filterOperatorMap[f.field]) {
             case 'contains': {
-              if (d[f.field].indexOf(f.value) > -1) {
-                match = true;
+              if (
+                fieldValue &&
+                typeof fieldValue === 'string' &&
+                typeof f.value === 'string'
+              ) {
+                if (
+                  fieldValue.toLowerCase().indexOf(f.value.toLowerCase()) > -1
+                ) {
+                  match = true;
+                }
               }
               break;
             }
@@ -44,12 +61,12 @@ export const filterByDataFilters = (
               if (Array.isArray(f.value)) {
                 f.value.forEach((v) => {
                   if (!match) {
-                    if (Array.isArray(d[f.field])) {
-                      if (d[f.field].indexOf(v) > -1) {
+                    if (Array.isArray(fieldValue)) {
+                      if (fieldValue.indexOf(v) > -1) {
                         match = true;
                       }
                     } else {
-                      if (d[f.field] === v) {
+                      if (fieldValue === v) {
                         match = true;
                       }
                     }
@@ -62,7 +79,7 @@ export const filterByDataFilters = (
               if (Array.isArray(f.value)) {
                 f.value.forEach((v) => {
                   if (!match) {
-                    if (d[f.field] === v) {
+                    if (fieldValue === v) {
                       match = true;
                     }
                   }
@@ -74,7 +91,7 @@ export const filterByDataFilters = (
               if (Array.isArray(f.value)) {
                 const min = f.value[0];
                 const max = f.value[1];
-                if (d[f.field] >= min && d[f.field] <= max) {
+                if (fieldValue >= min && fieldValue <= max) {
                   match = true;
                 }
               }
@@ -82,12 +99,12 @@ export const filterByDataFilters = (
             }
             case 'between-dates-inclusive': {
               if (
-                typeof d[f.field] === 'string' &&
+                typeof fieldValue === 'string' &&
                 Array.isArray(f.value) &&
                 f.value[0] &&
                 f.value[1]
               ) {
-                const dateValue = dayjs(d[f.field]);
+                const dateValue = dayjs(fieldValue);
                 if (
                   dateValue.isAfter(f.value[0]) &&
                   dateValue.isBefore(f.value[1])

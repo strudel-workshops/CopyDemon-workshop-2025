@@ -25,7 +25,7 @@ export const DataView: React.FC<DataViewProps> = ({
   const [pageSize, setPageSize] = useState(25);
   const [offset, setOffest] = useState(page * pageSize);
   // CUSTOMIZE: the unique ID field for the data source
-  const dataIdField = 'id';
+  const dataIdField = 'owner';
   // CUSTOMIZE: query mode, 'client' or 'server'
   // const queryMode = 'server';
   const queryMode = 'client';
@@ -102,14 +102,20 @@ export const DataView: React.FC<DataViewProps> = ({
             width: 400,
           },
           {
-            field: 'completed',
-            headerName: 'Completed',
+            field: 'is_public',
+            headerName: 'Public',
             width: 150,
             type: 'boolean',
           },
           {
-            field: 'userId',
-            headerName: 'User ID',
+            field: 'is_approved',
+            headerName: 'Approved',
+            width: 150,
+            type: 'boolean',
+          },
+          {
+            field: 'status.column', // what to do with data looks like {status : {column:222, tables:{number:123}}}
+            headerName: 'Column',
             width: 150,
             type: 'number',
           },
